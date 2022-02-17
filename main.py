@@ -3,6 +3,7 @@ from tracemalloc import start
 import pygame
 from sys import exit
 from random import randint
+import time
 
 def display_score():
     current_time = int(pygame.time.get_ticks()/1000) - start_time
@@ -41,6 +42,18 @@ def player_animation():
         player_surf = player_walk[int(player_index)]
     #play walking animation if player is on floor
     #display jump surface when player is not on the floor
+def gamemusic():
+    chicken = randint(1, 3)
+    music1 = pygame.mixer.Sound('audio/music2.mp3')
+    music2 = pygame.mixer.Sound('audio/music1.mp3')
+    music3 = pygame.mixer.Sound('audio/music3.mp3')
+    time.sleep(2)
+    if chicken == 1:
+        music1.play()
+    elif chicken == 2:
+        music2.play()
+    else:
+        music3.play()
 
 pygame.init()
 screen = pygame.display.set_mode((800, 400))
@@ -48,10 +61,10 @@ pygame.display.set_caption("Squish's Day Out")
 clock = pygame.time.Clock()
 test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 game_active = False
+gamemusic()
 start_time = 0
 score = 0
-bg_music = pygame.mixer.Sound('audio/music.mp3')
-bg_music.play()
+
 
 sky_surface = pygame.image.load('graphics/Sky.png').convert()
 ground_surface = pygame.image.load('graphics/ground.png').convert()
@@ -65,6 +78,15 @@ snail_frame_2 = pygame.image.load('graphics/snail/snail2.png').convert_alpha()
 snail_frames = [snail_frame_1, snail_frame_2]
 snail_frame_index = 0
 snail_surf = snail_frames[snail_frame_index]
+
+#heart
+heart1 = pygame.image.load('graphics/heart.png').convert_alpha()
+heart1_scaled = pygame.transform.rotozoom(heart1,25,0.2)
+heart1_rect = heart1_scaled.get_rect(center = (100,90))
+
+heart2 = pygame.image.load('graphics/heart.png').convert_alpha()
+heart2_scaled = pygame.transform.rotozoom(heart2,-20,0.2)
+heart2_rect = heart2_scaled.get_rect(center = (700,300))
 
 #Fly
 fly_frame1 = pygame.image.load('graphics/fly/fly1.png').convert_alpha()
@@ -92,6 +114,12 @@ player_stand_rect = player_stand.get_rect(center = (400,200))
 
 game_name = test_font.render('Squishs Day Out', False, (111,196,169))
 game_name_rect = game_name.get_rect(center = (400,80))
+
+sosquish = test_font.render('Wow, So Squish!', False, (111,196,169))
+sosquish_rect = sosquish.get_rect(center = (650,200))
+
+ily = test_font.render('Happy V-Day, ILY!', False, (111,196,169))
+ily_rect = sosquish.get_rect(center = (140,200))
 
 game_message = test_font.render('Press space to run', False, (111,196,169))
 game_message_rect = game_message.get_rect(center = (400,330))
@@ -193,7 +221,12 @@ while True:
         screen.blit(game_name, game_name_rect)
 
         if score == 0 : screen.blit(game_message, game_message_rect)
-        else: screen.blit(score_message, score_message_rect)
+        else: 
+            screen.blit(score_message, score_message_rect)
+            screen.blit(sosquish, sosquish_rect)
+            screen.blit(ily,ily_rect)
+            screen.blit(heart1_scaled, heart1_rect)
+            screen.blit(heart2_scaled, heart2_rect)
 
     
     
